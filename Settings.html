@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TrustFinance</title>
+    <link rel="stylesheet" href="Sstyle.css">
+    <script>
+        function toggleTheme() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        };
+    </script>
+</head>
+<body>
+    <div class="settings-container">
+        <h1>Settings</h1>
+
+        <h2>Appearance</h2>
+        <div class="toggle">
+            <label>Dark Mode:</label>
+            <input type="checkbox" onclick="toggleTheme()" id="theme-toggle">
+        </div>
+
+        <h2>Notifications</h2>
+        <div class="toggle">
+            <label>Email Notifications:</label>
+            <input type="checkbox" id="email-notifications">
+        </div>
+
+        <h2>Security</h2>
+        <div class="toggle">
+            <label>2-Factor Authentication:</label>
+            <input type="checkbox" id="2fa">
+        </div>
+
+        <h2>Language</h2>
+        <select id="language">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+        </select>
+    </div>
+
+    <footer>
+        <button onclick="saveSettings()">Save Changes</button>
+    </footer>
+
+    <script>
+        function saveSettings() {
+            const emailNotifications = document.getElementById('email-notifications').checked;
+            const twoFactorAuth = document.getElementById('2fa').checked;
+            const language = document.getElementById('language').value;
+
+            const settings = {
+                emailNotifications,
+                twoFactorAuth,
+                language,
+            };
+
+            localStorage.setItem('settings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        }
+
+        window.onload = function () {
+            const savedSettings = JSON.parse(localStorage.getItem('settings'));
+            if (savedSettings) {
+                document.getElementById('email-notifications').checked = savedSettings.emailNotifications;
+                document.getElementById('2fa').checked = savedSettings.twoFactorAuth;
+                document.getElementById('language').value = savedSettings.language;
+            }
+
+            const theme = localStorage.getItem('theme') || 'light';
+            document.getElementById('theme-toggle').checked = (theme === 'dark');
+        };
+    </script>
+</body>
+</html>

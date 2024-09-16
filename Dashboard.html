@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TrustFinance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Welcome, [User]</h1>
+        <p>Your balance: $<span id="balance"></span></p>
+        <button onclick="location.href='deposit.html'">Deposit Funds</button>
+        <button onclick="location.href='withdraw.html'">Withdraw Funds</button>
+        <button onclick="location.href='transactions.html'">View Transaction History</button>
+    </div>
+
+    <script>
+        async function fetchBalance() {
+            const response = await fetch('http://localhost:3000/dashboard', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+
+            const data = await response.json();
+            document.getElementById('balance').innerText = data.balance || '0.00';
+        }
+
+        window.onload = fetchBalance;
+    </script>
+</body>
+</html>
